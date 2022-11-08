@@ -1,10 +1,32 @@
 ---
-- name: firs start
+- name: install Apache
   hosts: all
   tasks:
   - name: package names
     yum:
-      name: [ 'gcc' , 'make', 'epel-release']
+      name: httpd
       #state: removed
        state: present 
+  - name: start Apache server
+    service: 
+      name: httpd
+      state: started
+  - name: add firewall rules
+    firwalld:
+      port: 80/tcp
+      permanent: true
+      state: enabled
+  - name: reload firewall rules
+    systemd:
+      name: firewalld
+      state: reloaded
+  - name: copy index file to apache dir
+    copy:
+      src: /tmp/index.html
+      dest: /var/www/html/
+  - name: restart apache server
+    service:
+      name: httpd
+      state: restared
+      
 ...
