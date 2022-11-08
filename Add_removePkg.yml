@@ -1,0 +1,10 @@
+---
+- name: firs start
+  hosts: all
+  tasks:
+  - name: package names
+    yum:
+      name: [ 'gcc' , 'make', 'epel-release']
+      #state: removed
+       state: present 
+...
